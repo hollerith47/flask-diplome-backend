@@ -1,0 +1,1 @@
+python venv name = conda/mon_nouveau
