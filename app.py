@@ -1,4 +1,5 @@
-from flask import Flask, request, jsonify, make_response
+from flask import Flask, request, jsonify, make_response, send_from_directory
+from flask_cors import CORS
 from text_manager import predict_toxicity
 from image_manager import image_error_response, allowed_file, unique_filename, is_toxic
 
@@ -6,11 +7,17 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
-UPLOAD_FOLDER = "./uploads"
+UPLOAD_FOLDER = "uploads"
 
 app = Flask(__name__)
+CORS(app)
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+if not os.path.exists(app.config['UPLOAD_FOLDER']):
+    os.makedirs(app.config['UPLOAD_FOLDER'])
+# CORS(app, {"origins": "https://www.allow-url.com"})
+
+
 
 
 @app.route('/')
@@ -61,11 +68,17 @@ def check_images():
         # Traitement de l'image ici (comme la prédiction du modèle)
         try:
             result = is_toxic(file_path)
-        finally:
+            if result:
+                if os.path.exists(file_path):
+                    os.remove(file_path)
+                return jsonify({"is_toxic": result, "image": None})
+            else:
+                full_path = f"/uploads/{filename}"
+                return jsonify({"is_toxic": result, "image": full_path})
+        except Exception as e:
             if os.path.exists(file_path):
                 os.remove(file_path)
-
-        return jsonify({"is_toxic": result, "image": filename})
+                return image_error_response(str(e))
 
     return image_error_response("Type de fichier non autorisé")
 
@@ -84,8 +97,13 @@ def check_texts():
     return jsonify(response), 200
 
 
+@app.route('/api/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+
 if __name__ == '__main__':
     # // development
-    # app.run(debug=True, port=5500)
+    app.run(debug=True, port=5500)
     # // production
-    app.run(debug=False, host="0.0.0.0")
+    # app.run(debug=False, host="0.0.0.0")

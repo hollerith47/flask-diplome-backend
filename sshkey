@@ -1,0 +1,21 @@
+Backed up /home/cecfranc/.ssh/id_rsa to /home/cecfranc/.ssh/id_rsa.1713625544
+Backed up /home/cecfranc/.ssh/id_rsa.pub to /home/cecfranc/.ssh/id_rsa.1713625544.pub
+Generating public/private rsa key pair.
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in /home/cecfranc/.ssh/id_rsa.
+Your public key has been saved in /home/cecfranc/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:2zQ+TWSrqFHB2OgVkPWeiPBGXT3u2L6+fkI6fspCNhM 
+The key's randomart image is:
++---[RSA 2048]----+
+|      .+o ..     |
+|      .* +  o    |
+|    . + * ..o.   |
+|     = oE+ +..   |
+|      = S.=+o    |
+|     . .=*.=+    |
+|      .ooo=+.    |
+|       o..o.+ .  |
+|      .  o+*==   |
++----[SHA256]-----+
